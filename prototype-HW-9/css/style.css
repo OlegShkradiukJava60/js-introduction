@@ -1,52 +1,66 @@
 body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    --box-width:10vh;
+}
 
-    height: 100vh;
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
 }
 
 .detailedContainer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-.detailedContainer--image{
-    width: 25vh;
-    height: 25vh;
-    background-color: gold;
-    font-size: 3rem;
-    width: 500px;
-    object-fit: cover;
+.detailedContainer--image {
+  width: 25vh;
+  height: 25vh;
+  background-color: gold;
+  font-size: 3rem;
+  width: 500px;
+  object-fit: cover;
 }
 
-.detailedContainer--title{
-    width: 500px;
-    background-color: rgb(122, 219, 83);
-    font-size: 2rem;
+.detailedContainer--title {
+  width: 500px;
+  background-color: green;
+  font-size: 2rem;
 }
 
-.boxes{
-    display: flex;
-    flex-direction: row;
-    width: 50vh;
-    justify-content: space-around;
-    margin-top: 20px;
+.boxes {
+  display: flex;
+  flex-direction: row;
+  width: 50vh;
+  justify-content: space-around;
+  margin-top: 20px;
 }
 
-.box{
-background-color: navajowhite;
-color: darkgrey;
-font-family: 'Courier New', Courier, monospace;
-font-size: small;
-width: 10vh;
-height: 10vh;
-text-align: center;
-border: 1px solid purple;
-border-radius: 30%;
-align-items: center;
-justify-content: center;
-display: flex;
-cursor: pointer;
+.box {
+  background-color: navajowhite;
+  color: darkgrey;
+  font-family: "Courier New", Courier, monospace;
+  font-size: small;
+  width: var(--box-width);
+  height: var(--box-width);
+  text-align: center;
+  border: 1px solid purple;
+  border-radius: 30%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  cursor: pointer;
+}
+
+.box1 {
+  width: calc(var(--box-width) * 1.2);
+  height: calc(var(--box-width) * 1.2);
+}
+
+.box2 {
+    width: calc(var(--box-width) - 2vh);
+    height: calc(var(--box-width) - 2vh);
 }
