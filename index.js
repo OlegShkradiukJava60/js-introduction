@@ -1,6 +1,14 @@
-function sum(num1, num2="1") {
-    return num1 + num2;
+function sumDigits(num) {
+    // TODO 
+    //returns sum of the digits in the given number 
+    // examples: sumDigits(123) => 6
+    // sumDigits ("123") => 6
+    // sumDigits ("a123") => NaN
+    // sumDigits ("123a") => 6
 }
 
-console.log(sum(1,1) + sum(20, 30)); 
-console.log(`sum(10, 20) = ${sum( 10, 20)}`) /* +sum(10, 20) = 30 */
+ 
+function displayAnanas(){
+//TODO 
+// display out word "ananas" 
+}
