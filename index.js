@@ -1,29 +1,36 @@
-// let a=2;
-// a="abc";
-// console.log(a);
-// const b =3;
-//  b = "lmn"; -const cannit be updated
-//  primirive types
-/*
-1. number  like double in Java
-2. string "abc" < "b"
-3. boolean (true, false)
-4. undefined (undefined)
-5. null (null) 
 
-*/
-//  1. number
-let a = 100;
-a /= 3; 
+// strings: *********
+// let str = "hello";
+// str = str.at.toLowerCase();
+// console.log(str);
+// let b = str < "kuku";
+// console.log(b);
+// **********************************************
+// comparing strings: if both are strings the comparing will be according to codes ASCII 
+// if one is a number the second will be coverted to a number as well
+// if the second string cannot be converted to a number the specific value NaN will give always false except operation 
+// **********************************************
+// let a9 = "20";
+// let str1 = a9;
+// let str2 = "9";
+// let b = str1 < str2;
+// console.log (b);
 
-console.log("non-normolizef result of division 100 on 3", a);
-a = Math.trunc(a);
+// ********* 
+// let str1 = "2a";
+// let str2 = "-5";
+// console.log(str1 - str2);
 
-console.log("normolizef result of division 100 on 3", a);
-a = Math.round(30.6);
+// let str = true;
+// if(NaN) { 
+//     console.log("" + 5 * 2);;
+// }
 
-console.log("30.6 rounded - ", a);
+// // ************************
+// console.log(null - "123"); // -123
+/****************************** */
+// console.log(true + false);
 
-console.log("30.1 after method floor - ", Math.floor(30.1));
+// **********************************
 
-console.log("30.1 after method floor - ", Math.ceil(30.1));
+console.log(123 + +"true");
