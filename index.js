@@ -1,20 +1,36 @@
-function sumDigits(str) {
+// function sumDigits(str) {
 
-    let sum = 0;
+//     let num = Math.trunc(Math.abs(+str));
 
-    let num = Math.trunc(Math.abs(+str));
+//     if (isNaN(num)) {
+//         return NaN;
+//     }
+// let sum = 0;
 
-    if (isNaN(num)) {
-        return NaN;
+//     while (num > 0) {
+//         let digit = num % 10;
+//         sum += digit;
+//         num = Math.trunc(num / 10);
+//     }
+//     return sum;
+// }
+
+function sumDigits(num) {
+    let source = num * 1;
+    let res = NaN;
+    if(source == num){
+        res = 0;
+        if(source < 0 ){
+            source = -source;
+        }
+        source = Math.trunc();
+        while (source > 0) {
+            const digit = source % 10;
+            res += digit;
+            source = Math.trenc(source / 10);
+        }
     }
-
-
-    while (num > 0) {
-        let digit = num % 10;
-        sum += digit;
-        num = Math.trunc(num / 10);
-    }
-    return sum;
+    return res;
 }
 
 console.log (`result:  ${sumDigits(" ")}`) // => 6
