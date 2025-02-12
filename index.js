@@ -1,40 +1,59 @@
+const deltaDigit = "0".charCodeAt(0);
+const deltaLetter = "a".charCodeAt(0) + 10
 function myParseInt(numStr, radix = 10) {
-    if (typeof numStr !== 'string') numStr = String(numStr);
-    if (radix < 2 || radix > 37) return NaN;
-    numStr = numStr.trim();
-    if (numStr.length === 0) return NaN;
-    
-    let res = 0;
-    let sign = 1;
-    let i = 0;
-    
-    if (numStr[0] === '-') {
-        sign = -1;
-        i = 1;
-    } else if (numStr[0] === '+') {
-        i = 1;
+    let res = NaN;
+
+    if(radix > 1 && radix <37 ){
+
+
     }
-    
-    for (; i < numStr.length; i++) {
-        let char = numStr[i];
-        let digit;
-        
-        if (char >= '0' && char <= '9') {
-            digit = char.charCodeAt(0) - '0'.charCodeAt(0);
-        } else if (char >= 'a' && char <= 'z') {
-            digit = char.charCodeAt(0) - 'a'.charCodeAt(0) + 10;
-        } else if (char >= 'A' && char <= 'Z') {
-            digit = char.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
-        } else {
-            break;
+
+
+    numStr = getPreparedString(numStr);
+    let index = getIndex(numStr);
+    const sign = getSign(numStr);
+
+    while (!isNaN(digit = getDigit(numStr[index], radix))) {
+        if(isNaN(res)){
+            res = 0;
         }
-        
-        if (digit >= radix) break;
         res = res * radix + digit;
+        index++;
     }
-    
     return res * sign;
 }
+function getPreparedString(str){
+    str = str + "";
+    str = str.trim();
+    str = str.toLowerCase()
+    return str;
+}
+function getIndex(str) {
+    let index = 0;
+    if(str[0] == '-' ||[0] == '+'){
+        index++;
+    }
+    return index;
+}
+function getSign(str) {
+    let sign = 1;
+    if(str[0] == '-'){
+        sign = -1
+    }
+    return sign
+}
+function getDigit(symbol, radix){
+    let res = NaN;
+    const code = symbol.charCodeAt(0);
+    const digit = symbol / symbol == 1 ? code -deltaDigit : code - deltaLetter;
+    if (digit >= 0 && digit < radix ) {
+        res = digit;
+    }
+
+ return res;
+}
+
+
 
 
 console.log(`conversion string to number in decimal number system myParseInt("123")=123 ${myParseInt("123") == 123}`)
