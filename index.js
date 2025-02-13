@@ -1,19 +1,26 @@
 
-function some (array, fun) {
-    for (let i = 0; i < array.length; i++) {
+function some(array, fun) {
+    let i = 0;
+    let res = true;
+    while (i < array.length && res) {
         if (fun(array[i], i)) {
-            return true;
+            res = true; 
         }
-        return false;
+        i++
     }
+    return res;
 }
-function every (array, fun) {
-    for (let i = 0; i < array.length; i++) {
-        if (fun(array[i], i)){
-            return true;
+
+function every(array, fun) {
+    let i = 0;
+    let res = true; 
+    while (i < array.length && res) {
+        if (fun(array[i], i)) {
+            res = false; 
         }
-        return false;
+        i++
     }
+    return res; 
 }
 
 function evenNumber(num) {
