@@ -1,20 +1,33 @@
-
-// function is an object with operator () (function call)
-// conversion function to string will return string containin text of the function
-//conversion function to number will return NaN
-const sum = function(a,b){
-    return a + b;
-}
-const subtract = function(a,b){
-    return a - b;
-}
-const multiply = function(a,b){
-    return a * b;
-}
-// console.log(sum + "")
-function calculate(fun, a, b){
-    return fun(a,b);
+function sum (...operands) {
+    let sum = 0;
+    // if(Array.isArray(operands[0])){
+    //     operands = [...operands[0]];
+    // }
+    for (let i = 0; i < operands.length; i++) {
+        let operand = operands[i]
+        if (Array.isArray(operand)) {
+            operand = sumArray(operand);
+        }
+        sum += operand
+    }
+    return sum;
 }
 
-console.log (calculate(multiply, 10, sum))
-console.log(10(1, 6))
+function sumArray(array) {
+    let sum = 0
+    for(let i = 0; i < array.length; i++){
+        sum += array[i];
+    }
+    return sum;
+}
+
+
+// // examples of function sum
+// console.log (`sum(1,2, "Hello"=${sum(1,2, "Hello")}}`);
+// console.log(`sum([1, 2, 3, 4])=${sum([1, 2, 3, 4])}`);
+
+console.log(`sum(1,2,3,4) = $sum(1,2,3,4)}`)
+console.log(`sum([1, 2, 3, 4])=${sum([1, 2, 3, 4])}`)
+console.log(`sum([1, 2, 3, 4], 5, 6)=${sum([1, 2, 3, 4], 5, 6)}`)
+console.log(`Math.max(1, 2, 3) = ${Math.max(1, 2, 3)}`)
+console.log(`Math.max(...[1, 2, 3]) = ${Math.max(...[1, 2, 3])}`)
