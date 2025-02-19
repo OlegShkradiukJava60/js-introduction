@@ -1,45 +1,35 @@
-function some(array, fun) {
-    let index = 0;
-    while (index < array.length &&!fun(array[index], index)) {
-    index++;
-    }
-    return index < array.length;
-}
+const array = ['Hello', 122, -10, 'Java', 'JavaScript', 500, 'NodeJS'];
+// // finding
+// let index = array.indexOf("Java");
+// console.log(index);
+// const array1 = array.filter(function(e){
+//     let res = true; 
+//     if(typeof e == "string"){
+//         res = !e.includes("Java")
+//     }
+//     return res;
+// })
+// console.log(array1)
 
-function every(array, fun) {
-    let index = 0;
-    while (index < array.length && fun(array[index], index)) {
-    index++;
-    }
-    return index == array.length;
-}
+// forEach
 
-
-function evenNumber(num) {
-    return num % 2 === 0;
-}
-
-function elmGreaterIndex(elem, index) {
-    return elem < index;
-}
+// array.forEach(function(e, i) {
+//     console.log(`${i + 1}: ${e}`);
+// })
 
 
-function elmGreaterIndex(elem, index) {
-    return elem > index;
-}
+//  MAP
+// const array1 = array.map(function(e){
+//     let res = typeof e == "number" ? Math.abs(e).toString().length: e.length;
+//     return res;
+//     })
+//     console.log(array1)
 
-const array = [2, 3, 4];
-console.log(`some function for even numbers: ${some(array, evenNumber)} - true`);
-console.log(`every to check elements greater than index: ${every(array, elmGreaterIndex)} - true`);
 
-const array2 = [1, 3, 5];
-console.log(`some() to check even numbers (all odd): ${some(array2, evenNumber)} - false`);
-console.log(`every() to check elements greater than index (all greater): ${every(array2, elmGreaterIndex)} - true`);
+const array1 = [16,122,10000,2,9,1000000000];
+// console.log (array1.sort());
+// console.log (array1.to)
 
-const array3 = [0, 2, 4, 6];
-console.log(`some() to check even numbers (all even): ${some(array3, evenNumber)} - true`);
-console.log(`every() to check even numbers (all even): ${every(array3, evenNumber)} - true`);
-
-const array4 = [0, 1, 2, 3];
-console.log(`some() to check elements greater than index: ${some(array4, elmGreaterIndex)} - false`);
-console.log(`every() to check elements greater than index: ${every(array4, elmGreaterIndex)} - false`);
+console.log (array1.toSorted(function(a,b) {
+    return b - a;
+}))
