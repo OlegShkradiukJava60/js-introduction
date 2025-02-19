@@ -1,29 +1,32 @@
-// let a=2;
-// a="abc";
-// console.log(a);
-// const b =3;
-//  b = "lmn"; -const cannit be updated
-//  primirive types
-/*
-1. number  like double in Java
-2. string "abc" < "b"
-3. boolean (true, false)
-4. undefined (undefined)
-5. null (null) 
 
-*/
-//  1. number
-let a = 100;
-a /= 3; 
+function minMax(...operands) {
+    let min = Infinity;
+    let max = -Infinity;
 
-console.log("non-normolizef result of division 100 on 3", a);
-a = Math.trunc(a);
+    function numbersMinMax(num) {
+        if (num < min) {
+            min = num;
+        }
+        if (num > max) {
+            max = num;
+        }
+    }
 
-console.log("normolizef result of division 100 on 3", a);
-a = Math.round(30.6);
 
-console.log("30.6 rounded - ", a);
+    for (let i = 0; i < operands.length; i++) {
+        let operand = operands[i];
 
-console.log("30.1 after method floor - ", Math.floor(30.1));
+        if (Array.isArray(operand)) {
+            for (let j = 0; j < operand.length; j++) {
+                numbersMinMax(operand[j]);
+            }
+        } else if (typeof operand === "number" && isFinite(operand)) {
+            numbersMinMax(operand);
+        }
+    }
+    return [min, max];
+}
 
-console.log("30.1 after method floor - ", Math.ceil(30.1));
+console.log(`minMax(1, 2, 3)=${minMax(1, 2, 3)}`);
+console.log(`minMax(1, 2, 3, [100, 50]=${minMax(1, 2, 3, [100, 50])}`);
+console.log(`minMax(1, 2, 3, [100, 50], [-2, 40, 200])=${minMax(1, 2, 3, [100, 50], [-2, 40, 200])}`);
