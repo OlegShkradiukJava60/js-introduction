@@ -1,35 +1,28 @@
-const array = ['Hello', 122, -10, 'Java', 'JavaScript', 500, 'NodeJS'];
-// // finding
-// let index = array.indexOf("Java");
-// console.log(index);
-// const array1 = array.filter(function(e){
-//     let res = true; 
-//     if(typeof e == "string"){
-//         res = !e.includes("Java")
-//     }
-//     return res;
-// })
-// console.log(array1)
+const arr = ['HELLO', 122, -10, 'Java', 'JavaScript', 500, 'Nodejs'];
 
-// forEach
+const compNumStr = (e1, e2) => {
+    const isNum1 = typeof e1 === "number";
+    const isNum2 = typeof e2 === "number";
 
-// array.forEach(function(e, i) {
-//     console.log(`${i + 1}: ${e}`);
-// })
+    if (isNum1 && isNum2) {
+        return e2 - e1;
+    }
+    if (isNum1 || isNum2) {
+        return isNum1 ? -1 : 1;
+    }
+    return e1.localeCompare(e2);
+};
 
-
-//  MAP
-// const array1 = array.map(function(e){
-//     let res = typeof e == "number" ? Math.abs(e).toString().length: e.length;
-//     return res;
-//     })
-//     console.log(array1)
+arr.sort(compNumStr);
+console.log(arr);
 
 
-const array1 = [16,122,10000,2,9,1000000000];
-// console.log (array1.sort());
-// console.log (array1.to)
+const orderedList = (array) => {
+    const items = array
+        .map((item) => `<li class=" item ${typeof item === "number" ? " item_number" : " "}"> ${item}</li>`)
+        .join(" ");
+    return `<ol>${items}</ol>`;
+};
 
-console.log (array1.toSorted(function(a,b) {
-    return b - a;
-}))
+const bodyElement = document.querySelector("body");
+bodyElement.innerHTML = orderedList(["Hello", 300, "Java", "Nodejs", 100]);
