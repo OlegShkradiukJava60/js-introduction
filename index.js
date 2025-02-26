@@ -1,28 +1,26 @@
-const arr = ['HELLO', 122, -10, 'Java', 'JavaScript', 500, 'Nodejs'];
 
-const compNumStr = (e1, e2) => {
-    const isNum1 = typeof e1 === "number";
-    const isNum2 = typeof e2 === "number";
+//  one person presented by separate variables
+const id = 123;
+const name = "Vasya";
+const addressCity = 'Lod';
+const addressStreet = 'Sokolov';
+const addressApp = 12;
+const children = ["Yackob", "Asaf"]
 
-    if (isNum1 && isNum2) {
-        return e2 - e1;
-    }
-    if (isNum1 || isNum2) {
-        return isNum1 ? -1 : 1;
-    }
-    return e1.localeCompare(e2);
-};
+const person1 = {id:123, name: "Vasya", address: {city: 'Lod', street: 'Sokolov', app: 12},
+children: ["Yackob", "Asaf"]};
 
-arr.sort(compNumStr);
-console.log(arr);
+// Factory method
+function createPerson(id,name,city,street, app,children){
+    return{id:id, name:name, address:{city:city, street:street, app:app},children:children}
+}
+const person2 = createPerson(123,"Vasya",'Lod', 'Sokolov',12, ["Yackob", "Asaf"])
+// const person2 = person1
+console.log(`person1 === person2 is ${person1 === person2}`)
+const jsonPerson1 = JSON.stringify(person1);
+const jsonPerson2 = JSON.stringify(person2);
+console.log(`JSON presentation of person1 is ${jsonPerson1}`)
+console.log(`JSON presentation of person2 is ${jsonPerson2}`)
 
+console.log(`jsonPerson1 === jsonPerson2 is ${jsonPerson1 === jsonPerson2}`)
 
-const orderedList = (array) => {
-    const items = array
-        .map((item) => `<li class=" item ${typeof item === "number" ? " item_number" : " "}"> ${item}</li>`)
-        .join(" ");
-    return `<ol>${items}</ol>`;
-};
-
-const bodyElement = document.querySelector("body");
-bodyElement.innerHTML = orderedList(["Hello", 300, "Java", "Nodejs", 100]);
