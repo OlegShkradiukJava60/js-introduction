@@ -1,26 +1,42 @@
+function test(testObj) {
+    // testObj structure {script: <string containg script text>,expected: <any type> }
+    // returns resultObj with structure{script: <string containg script text>, 
+    // expectedJSON: <JSON string containing expected result>, actualJSON: <JSON string containing actual result>, result: <string containing either 'passed'
+    // or 'failed' }
 
-//  one person presented by separate variables
-const id = 123;
-const name = "Vasya";
-const addressCity = 'Lod';
-const addressStreet = 'Sokolov';
-const addressApp = 12;
-const children = ["Yackob", "Asaf"]
+    const expectedJSON = JSON.stringify(testObj.expected);
 
-const person1 = {id:123, name: "Vasya", address: {city: 'Lod', street: 'Sokolov', app: 12},
-children: ["Yackob", "Asaf"]};
+    let evalRes;
+    try {
+        evalRes = eval(testObj.script);
+    } catch (error) {
+        evalRes = error;
+    }
+    const actualJSON = JSON.stringify(evalRes);
 
-// Factory method
-function createPerson(id,name,city,street, app,children){
-    return{id:id, name:name, address:{city:city, street:street, app:app},children:children}
+    const result = expectedJSON === actualJSON ? 'passed' : 'failed';
+    const testResult = createTestResult(testObj.script, expectedJSON, actualJSON, result)
+    return testResult;
+
+
 }
-const person2 = createPerson(123,"Vasya",'Lod', 'Sokolov',12, ["Yackob", "Asaf"])
-// const person2 = person1
-console.log(`person1 === person2 is ${person1 === person2}`)
-const jsonPerson1 = JSON.stringify(person1);
-const jsonPerson2 = JSON.stringify(person2);
-console.log(`JSON presentation of person1 is ${jsonPerson1}`)
-console.log(`JSON presentation of person2 is ${jsonPerson2}`)
+console.log(test({script:`minMax(["hello", "kuku", "abc"])`, expected:["abc","kuku"]}))
+console.log(test({script:`minMax([1, 2, 3])`, expected:[1,3]}))
+function createTestResult(script, expectedJSON, actualJSON, result){
+    return {script, expectedJSON, actualJSON, result}
+}
 
-console.log(`jsonPerson1 === jsonPerson2 is ${jsonPerson1 === jsonPerson2}`)
+function testframework(scripts, expectedResults){
+    // TODO
+    // input
+    // scripts - array of tested scripts 
+    // expectedResults - array of appropriate res
+    // scripts[i] and expectedResults[i] 
 
+    // output
+    const bodyElement = document.querySelector('body');
+    // bodyElement.innerHTML = <orderedList of test results with coloring legend: passed tests by green,
+    //  failed tests by red. after list summary including number of passed tests and number of failed tests 
+    // with appropriate coloring (green / red)> 
+    // presenting list items on the browser
+}
