@@ -1,7 +1,45 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgb(155, 123, 83);
+}
+
+.container {
+  text-align: center;
+  padding: 30px;
+  border-radius: 30px;
+  background-color: #e0e0e0;
+  width: 100%;
+  max-width: 1000px;
+}
+
+h1 {
+margin: 0;
+}
+
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+ol li {
+  font-size: 1.1rem;
+  margin: 10px 0;
+}
+
+.final {
+  font-size: 1.2rem;
+}
+
+.final_text {
+  font-size: 1.3rem;
+}
+.item_passed {
+  color: green;
+}
+
+.item_failed {
+  color: red;
 }
