@@ -1,43 +1,94 @@
 
 function test(testObj) {
-    // testObj structure {script: <string containg script text>,expected: <any type> }
-    // returns resultObj with structure{script: <string containg script text>, 
-    // expectedJSON: <JSON string containing expected result>, actualJSON: <JSON string containing actual result>, result: <string containing either 'passed'
-    // or 'failed' }
-
     const expectedJSON = JSON.stringify(testObj.expected);
-
     let evalRes;
+
     try {
         evalRes = eval(testObj.script);
     } catch (error) {
-        evalRes = error;
+        evalRes = error.toString();
     }
+
     const actualJSON = JSON.stringify(evalRes);
+    const result = expectedJSON === actualJSON ? 'right' : 'failed';
 
-    const result = expectedJSON === actualJSON ? 'passed' : 'failed';
-    const testResult = createTestResult(testObj.script, expectedJSON, actualJSON, result)
-    return testResult;
-
-
-}
-console.log(test({script:`minMax(["hello", "kuku", "abc"])`, expected:["abc","kuku"]}))
-console.log(test({script:`minMax([1, 2, 3])`, expected:[1,3]}))
-function createTestResult(script, expectedJSON, actualJSON, result){
-    return {script, expectedJSON, actualJSON, result}
+    return createTestResult(testObj.script, expectedJSON, actualJSON, result);
 }
 
-function testframework(scripts, expectedResults){
-    // TODO
-    // input
-    // scripts - array of tested scripts 
-    // expectedResults - array of appropriate res
-    // scripts[i] and expectedResults[i] 
+function createTestResult(script, expectedJSON, actualJSON, result) {
+    return { script, expectedJSON, actualJSON, result };
+}
 
-    // output
+function testframework(scripts, expectedResults) {
     const bodyElement = document.querySelector('body');
-    // bodyElement.innerHTML = <orderedList of test results with coloring legend: passed tests by green,
-    //  failed tests by red. after list summary including number of passed tests and number of failed tests 
-    // with appropriate coloring (green / red)> 
-    // presenting list items on the browser
+    let right = 0;
+    let failed = 0;
+    let outputHTML = "<ol>";
+
+    for (let i = 0; i < scripts.length; i++) {
+        let testObj = { script: scripts[i], expected: expectedResults[i] };
+        let result = test(testObj);
+
+        let color = result.result === "right" ? "green" : "red";
+        if (result.result === "right") {
+            right++;
+        } else {
+            failed++;
+        }
+
+        outputHTML += `<li style="color: ${color};">${result.script} - ${result.result}</li>`;
+    }
+
+    outputHTML += "</ol>";
+    outputHTML += `<p style="color: green;">right: ${right}</p>`;
+    outputHTML += `<p style="color: red;">Failed: ${failed}</p>`;
+
+    bodyElement.innerHTML = outputHTML;
 }
+
+
+function minMax(arr) {
+    return [Math.min(...arr), Math.max(...arr)];
+}
+
+
+let scripts = [
+    'minMax([8, 4, 2, 6, 0, 9])',
+    'minMax(["cherry", "kiwi", "mango"])',
+    'minMax(["zolo", "Echo", "999", "Square"])',
+    'minMax([2, 4, 6, 8, 10])'
+];
+
+let expectedResults = [
+    [0, 9], // min = 0, max = 9
+    ["cherry", "mango"], // min = cherry, max = mango
+    [" ", "zolo"], // пробел - самый маленький, zolo - самый большой
+    [2, 10] // min = 2, max = 10
+];
+
+
+testframework(scripts, expectedResults);
+
+scripts = [
+    'minMax([8, 4, 2, 6, 0, 9])',
+    'minMax(["cherry", "kiwi", "mango"])',
+    'minMax(["zolo", "Echo", "999", "Square", "EVENING", " "]',
+    'minMax([2, 4, 6, 8, 10])'
+]
+
+expectedResults = [
+    [8, 4, 2, 6, 0, 9],
+    ["cherry", "kiwi", "mango"],
+    ["zolo", "Echo", "999", "Square", "EVENING", " "],
+    [2, 4, 6, 8, 10],
+]
+
+function testframework(scripts, expectedResults) {
+    let testObj = {
+        script: scripts[i],
+        expected: expectedResults[i],
+    };
+
+    let result = test(testObj);
+    let resultingString = efertr ${ result.script };
+} 

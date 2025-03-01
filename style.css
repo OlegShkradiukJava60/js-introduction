@@ -2,12 +2,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
-}
-.item {
-    font-size: 2rem;
-}
-
-.item_number{
-    color:red
 }
