@@ -1,114 +1,119 @@
-// Функция myReduce - собственная реализация метода reduce
-// The myReduce function - a custom implementation of the reduce method
 function myReduce(array, callback, initialValue) {
-    let acc = initialValue === undefined ? array[0] : initialValue;
-    const index = initialValue === undefined ? 1 : 0;
-
+    //first parameter is an array for reducing
+    //returns one value after reducing
+    //see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
+    let acc = initialValue == undefined ? array[0] : initialValue;
+    const index = initialValue == undefined ? 1 : 0;
     for (let i = index; i < array.length; i++) {
-        acc = callback(acc, array[i], i, array);
+      acc = callback(acc, array[i], i, array);
     }
     return acc;
-}
-
-// Функция minMax - находит минимум и максимум в массиве
-// The minMax function - finds the minimum and maximum values in an array
-function minMax(arr) {
-    if (!Array.isArray(arr) || arr.length === 0) return [undefined, undefined];
-
-    return myReduce(
-        arr,
-        (acc, curr) => [Math.min(acc[0], curr), Math.max(acc[1], curr)],
-        [arr[0], arr[0]]
+  }
+  function minMax(arr) {
+    //arr is an array containing either strings or numbers
+    // returns array with two elemnts: first is min value, second is max value
+    //requirement: to use myReduce method described above (only one call)
+    const res = myReduce(
+      arr,
+      (acc, curr) => [
+        acc[0] > curr ? curr : acc[0],
+        acc[1] < curr ? curr : acc[1],
+      ],
+      [arr[0], arr[0]]
     );
-}
-
-// Функция createTestResult - создает объект с результатом теста
-// The createTestResult function - creates an object with the test result
-function createTestResult(script, expectedJSON, actualJSON, result) {
-    return { script, expectedJSON, actualJSON, result };
-}
-
-// Функция test - выполняет тест
-// The test function - runs a test
-function test(testObj) {
+    return res;
+  }
+  const arr1 = ["hello", "kuku", "abc"];
+  const arr2 = ["abc", "hello", "kuku"];
+  const arr3 = [1, 2, 3];
+  const arr4 = [3, 2, 1];
+  console.log(
+    test({
+      script: 'minMax(["hello", "kuku", "abc"])',
+      expected: ["abc", "kuku"],
+    })
+  );
+  console.log(test({ script: "minMax([1, 2, 3])", expected: [1, 3] }));
+  
+  function test(testObj) {
+    //testObj structure {script: <string containg script text>, expected: <any type>}
+    //returns resultObj with structure {script: <string containg script text>,
+    //  expectedJSON: <JSON string containing expected result>,
+    //  actualJSON: <JSON string containing actual result>, result: <string containing either 'passed'
+    //  or 'failed'}
     const expectedJSON = JSON.stringify(testObj.expected);
     let evalRes;
     try {
-        evalRes = eval(testObj.script);
+      evalRes = eval(testObj.script);
     } catch (error) {
-        evalRes = error.toString();
+      evalRes = error;
     }
     const actualJSON = JSON.stringify(evalRes);
     const result = expectedJSON === actualJSON ? "passed" : "failed";
-
-    return createTestResult(testObj.script, expectedJSON, actualJSON, result);
-}
-
-// Функция testframework - запускает тесты и выводит результаты в body
-// The testframework function - runs tests and displays results inside the body element
-function testframework(scripts, expectedResults) {
+    const testResult = createTestResult(
+      testObj.script,
+      expectedJSON,
+      actualJSON,
+      result
+    );
+    return testResult;
+  }
+  function createTestResult(script, expectedJSON, actualJSON, result) {
+    return { script, expectedJSON, actualJSON, result };
+  }
+  function testframework(scripts, expectedResults) {
+    //input
+    //scripts - array of tested scripts
+    //expectedResults - array of appropriate results
+    //scrpits[i] and expectedResults[i] should be consistent
+    /**************************************************************** */
+    //output
     const bodyElem = document.querySelector("body");
-
-    const results = scripts.map((script, index) =>
-        test({ script, expected: expectedResults[index] })
+    const resultObjects = getResultObjects(scripts, expectedResults);
+    const summary = getSummaryObject(resultObjects);
+    const resultItemsList = getResultItemsList(resultObjects);
+    const summaryLine = getSummaryLine(summary);
+    bodyElem.innerHTML = `${resultItemsList}${summaryLine}`;
+  }
+  function getResultObjects(scripts, expectedResults) {
+    const res = scripts.map((script, index) =>
+      test({ script, expected: expectedResults[index] })
     );
-
-    const { passed, failed } = results.reduce(
-        (acc, result) => ({
-            passed: result.result === "passed" ? acc.passed + 1 : acc.passed,
-            failed: result.result === "failed" ? acc.failed + 1 : acc.failed,
-        }),
-        { passed: 0, failed: 0 }
+    return res;
+  }
+  function getSummaryObject(resultObjects) {
+    const res = resultObjects.reduce(
+      (acc, cur) => ({
+        passed: cur.result === "passed" ? acc.passed + 1 : acc.passed,
+        failed: cur.result === "failed" ? acc.failed + 1 : acc.failed,
+      }),
+      { passed: 0, failed: 0 }
     );
-
-    bodyElem.innerHTML = orderedList(results, passed, failed);
-}
-
-// The orderedList function - creates an HTML ordered list with test results and summary
-function orderedList(results, passed, failed) {
-    return `
-      <div class="container">
-        <h1>Results</h1>
-        <ol>
-          ${results
-            .map(
-                (result) => `
-            <li class="${result.result === "passed" ? "item_passed" : "item_failed"
-                    }">
-              ${result.script}: ${result.result}
-            </li>
-          `
-            )
-            .join("")}
-        </ol>
-        <div class="final">
-          <p class="final_text">
-            <span class="item_passed">${passed} passed</span>, 
-            <span class="item_failed">${failed} failed</span>
-          </p>
-        </div>
-      </div>
-    `;
-}
-
-//Example tests
-const scripts = [
-    `myReduce([3, 1, 7, 5, 9, 10], (acc, val) => [Math.min(acc[0], val), Math.max(acc[1], val)], [Infinity, -Infinity])`,
-    `myReduce([5], (acc, val) => [Math.min(acc[0], val), Math.max(acc[1], val)], [Infinity, -Infinity])`,
-    `myReduce([], (acc, val) => [Math.min(acc[0], val), Math.max(acc[1], val)], [Infinity, -Infinity])`,
-    `minMax([3, 1, 7, 5, 9, 10])`,
-    `minMax([])`
-];
-
-//
-
-const expectedResults = [
-    [1, 10],
-    [5, 5],
-    [Infinity, -Infinity],
-    [1, 9],
-    [Infinity, -Infinity]
-];
-
-// Запускаем тесты / Run tests
-testframework(scripts, expectedResults);
+    return res;
+  }
+  function getResultItemsList(resultObjects) {
+    const resItems = resultObjects.map(getResItem).join('');
+    const resList = `<ol>${resItems}</ol>`;
+    return resList;
+  }
+  function getResItem(resultObject) {
+    const resItem = `<li class="item ${resultObject.result === "passed" ? "item_passed" : "item_failed"}"> ${getResText(resultObject)} </li>`;
+    return resItem;
+  }
+  function getResText(resultObject) {
+    const resStr = `${resultObject.script} ; expected is ${resultObject.expectedJSON}; actual is ${resultObject.actualJSON}`;
+    return resStr;
+  }
+  function getSummaryLine(summary) {
+    const summaryLine = `<div class="summary"><span class="item_passed">passed ${summary.passed}</span>
+    <span class="item_failed" >failed ${summary.failed}</span></div>` ; 
+    return summaryLine
+    
+  }
+  
+  testframework(["minMax([1,2,3])", "minMax(['a', 'b', 'c'])",
+   " myReduce([1, 2, 3], (acc,cur)=>acc + cur)", "myReduce([1, 2, 3], (acc, cur)=>acc * cur, 1)",
+   "myReduce([1, 2, 3], (acc, cur)=>acc * cur, 0)"
+  ],
+    [[1,4], ['a', 'c'], 6, 6, 6]
+  )
