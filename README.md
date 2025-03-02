@@ -1,5 +1,5 @@
-﻿# HW #13 Definition
-## write the method "some" (see comments)
-## write the method "every" (see comments)
-## write more test cases(console.log functoinality)
+﻿# HW#18 Definition
 
+## write method isAnagram in the module anagram.js
+
+### see the test in index.js for understanding whta should be implemented
