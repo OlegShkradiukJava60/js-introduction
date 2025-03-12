@@ -1,4 +1,3 @@
-
 import Employee from "./employee.js";
 
 export default class WageEmployee extends Employee {
@@ -9,8 +8,6 @@ export default class WageEmployee extends Employee {
     }
 
     computeSalary() {
-
-        const res = super.computeSalary() + this.hours * this.wage;
-        return res
+        return super.computeSalary() + this.hours * this.wage;
     }
 }

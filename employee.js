@@ -1,4 +1,3 @@
-
 export default class Employee {
     constructor(name, basicSalary, department) {
         this.name = name;

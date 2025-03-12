@@ -9,7 +9,7 @@ export default class Company {
 
     deleteEmployee(emplName) {
         delete this.employees[emplName];
-        return this; // Возвращаем объект компании для дальнейших цепочек вызовов
+        return this;
     }
 
     getDepBudget(department) {
@@ -22,10 +22,10 @@ export default class Company {
         if (employeesList.length === 0) return [];
 
         const maxSalary = Math.max(...employeesList.map(empl => empl.computeSalary()));
-        return employeesList.filter(empl => empl.computeSalary() === maxSalary)
+        return employeesList.filter(empl => empl.computeSalary() === maxSalary);
     }
 
     getEmployeesDepartment(department) {
-        return Object.values(this.employees).filter((empl) => empl.department === department);
+        return Object.values(this.employees).filter(empl => empl.department === department);
     }
 }
