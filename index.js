@@ -1,19 +1,34 @@
 
 import { testframework } from './testframework.js';
+class X {
+  constructor(arr) {
+    this.arr = arr;
+  }
+  logElements() {
+    this.arr.forEach(e => console.log(e))
+  }
 
-function f1() {
-  return "kuku"
+
+  sumElements() {
+    return this.arr.reduce((acc, cur) => acc + cur);
+  }
+
+  action(fun) {
+    return fun.call(this);
+  }
+  joinElements() {
+    return this.arr.join();
+  }
+  actionBind(fun) {
+    return fun();
+  }
 }
 
-function sum(op1 = 10, op2) {
-  
-  return op1 + op2
-}
 
-Function.prototype.toString = function () {
-  return this().toString();
-}
-
-// console.log(`sum.apply(undefined, [ 1, 2 ])=${sum.apply(undefined, ({x:1}) [1, 2 ])}`);
-// console.log(`sum(1,2)=${sum(1,2)}`)
-console.log(sum.bind(undefined, 1,2 ).toString())
+const objX = new X([1, 2, 3, 20, 40]);
+// objX.logElements();
+// console.log (objX.sumElements());
+// objX.action(objX.logElements)
+// console.log(objX.action(objX.sumElements));
+// console.log(objX.action(objX.joinElemenys))
+console.log(objX.actionBind(objX.sumElements.bind(objX)))
