@@ -1,70 +1,65 @@
-import { testframework } from './testframework.js';
-import WageEmployee from './WageEmployee.js';
-import Employee from './employee.js';
-import Manager from './Manager.js';
-import Company from './Company.js';
+import myBind from './myBind.js';
 
-const myCompany = new Company();
-myCompany.addEmployee(new Employee("Alice", 1000, "HR"));
-myCompany.addEmployee(new Manager("Bob", 3200, "Marketing", 6));
-myCompany.addEmployee(new WageEmployee("Charlie", 2800, "IT", 90, 180));
-myCompany.addEmployee(new WageEmployee("Diana", 3000, "Sales", 85, 150));
+class Deferred {
+  constructor() {
+    this.chain = [];
+    this.value = undefined;
+  }
 
-testframework(
-  "Company ",
-  `
-    const myCompany = new Company();
-    
-    myCompany.addEmployee(new Employee("Alice", 2500, "HR"));
-    myCompany.addEmployee(new Manager("Bob", 3200, "Marketing", 6)); // Увеличиваем коэффициент для Bob
-    myCompany.addEmployee(new WageEmployee("Charlie", 2800, "IT", 90, 180));
-    myCompany.addEmployee(new WageEmployee("Diana", 3000, "Sales", 85, 150));
-  `,
-  [
-    `myCompany.getDepBudget("IT")`,
-    `myCompany.getDepBudget("Marketing")`,
-    `myCompany.getDepBudget("Sales")`,
-    `myCompany.getEmployeesMaxSalary()`,
-    `myCompany.getEmployeesMaxSalary()[0].name`,
-    `myCompany.getEmployeesDepartment("IT")`,
-    `myCompany.getEmployeesDepartment("Sales")`,
-    `myCompany.getEmployeesDepartment("HR").length`,
-    `myCompany.deleteEmployee("Alice").employees`,
-  ],
-  [
-    2800 + (90 * 180), // IT департамент (Charlie)
-    3200 * 6, // Marketing департамент (Bob) увеличили коэффициент
-    3000 + (85 * 150), // Sales департамент (Diana)
-    [{ name: "Bob", basicSalary: 3200, department: "Marketing", factor: 6 }], // Теперь Bob с максимальной зарплатой
-    "Bob",
-    [
-      { name: "Charlie", basicSalary: 2800, department: "IT", hours: 90, wage: 180 }
-    ],
-    [
-      { name: "Diana", basicSalary: 3000, department: "Sales", hours: 85, wage: 150 }
-    ],
-    1, // HR департамент содержит только одного сотрудника
-    {
-      Bob: {
-        name: "Bob",
-        basicSalary: 3200,
-        department: "Marketing",
-        factor: 6
-      },
-      Charlie: {
-        name: "Charlie",
-        basicSalary: 2800,
-        department: "IT",
-        hours: 90,
-        wage: 180
-      },
-      Diana: {
-        name: "Diana",
-        basicSalary: 3000,
-        department: "Sales",
-        hours: 85,
-        wage: 150
-      },
-    },
-  ]
-);
+  // добавялем фунцкию // add function
+  then(callback) {
+    this.chain.push(callback);
+    return this;
+  }
+
+  // start chain
+  resolve(value) {
+    this.value = value; // first value
+
+    this.chain.forEach((callback) => {
+      this.runCallback.bind(this)(callback);
+    });
+  }
+
+  runCallback(callback) {
+    this.value = callback(this.value);  // induce callback and upgrate value
+  }
+}
+
+// examples
+
+const o = new Deferred();
+
+o.then(function (res) {
+  console.log("1", res); // hello world
+  return "a"
+})
+o.then(function (res) {
+  console.log("2", res); // a
+  return "b"
+})
+o.then(function (res) {
+  console.log("3", res); // b
+  return "c"
+})
+
+
+o.resolve("hello world"); // start chain
+
+
+
+//  MyBind
+
+
+function personInfo(age, country) {
+  console.log(
+    `Hello, my name is ${this.name}. I'm ${age} years old and live in ${country}.`
+  );
+}
+
+const person = {
+  name: "Oleg"
+};
+const personInfoOleg = personInfo.myBind(person, 28);
+
+personInfoOleg("Israel");
