@@ -1,65 +1,58 @@
-import myBind from './myBind.js';
 
-class Deferred {
-  constructor() {
-    this.chain = [];
-    this.value = undefined;
-  }
 
-  // добавялем фунцкию // add function
-  then(callback) {
-    this.chain.push(callback);
-    return this;
-  }
+function getUserPassword(probCorrectPass) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const passwords = ["correct", "wrong"];
+      const index = Math.random() < probCorrectPass ? 0 : 1;
+      resolve(passwords[index]);
+    }, 1000);
+  });
+}
 
-  // start chain
-  resolve(value) {
-    this.value = value; // first value
+function login(password) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (password === "correct"){
+        resolve("Login successful");
+      } else {
+        reject(new Error("login failed: incorrect password"))
+      }
+    }, 2000);
+  });
+}
 
-    this.chain.forEach((callback) => {
-      this.runCallback.bind(this)(callback);
+function getUserData(username) {
+  const users = {
+    Vasya: { name: "Vasya", age: 30 },
+    Petya: { name: "Petya", age: 40 },
+    Oleg: { name: "Oleg", age: 50 }
+  };
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (users[username]) {
+        resolve(users[username]);
+      } else {
+        reject(new Error(`User ${username} not found`));
+      }
+    }, 1000);
+  });
+}
+
+function funStackExample(username) {
+  getUserPassword(0.8)
+    .then((password) => {
+      console.log(`Generated password: ${password}`);
+      return login(password);
+    })
+    .then(() => getUserData(username))
+    .then((userData) => {
+      console.log("User:", userData);
+    })
+    .catch((error) => {
+      console.log(`Error: ${error.message}`);
     });
-  }
-
-  runCallback(callback) {
-    this.value = callback(this.value);  // induce callback and upgrate value
-  }
 }
 
-// examples
-
-const o = new Deferred();
-
-o.then(function (res) {
-  console.log("1", res); // hello world
-  return "a"
-})
-o.then(function (res) {
-  console.log("2", res); // a
-  return "b"
-})
-o.then(function (res) {
-  console.log("3", res); // b
-  return "c"
-})
-
-
-o.resolve("hello world"); // start chain
-
-
-
-//  MyBind
-
-
-function personInfo(age, country) {
-  console.log(
-    `Hello, my name is ${this.name}. I'm ${age} years old and live in ${country}.`
-  );
-}
-
-const person = {
-  name: "Oleg"
-};
-const personInfoOleg = personInfo.myBind(person, 28);
-
-personInfoOleg("Israel");
+funStackExample("Vasya");
