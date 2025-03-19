@@ -42,6 +42,7 @@ async function funStackExample(username) {
 }
 
 
-funStackExample('Vasya');
-funStackExample('Hana');
+const promise1 = funStackExample('Vasya');
+const promise2 = funStackExample('Hana');
 console.log("waiting for the data coming from the server");
+Promise.all([promise1, promise2,]).then(() => console.log("data processed"));
