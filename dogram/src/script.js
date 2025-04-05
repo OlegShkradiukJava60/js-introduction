@@ -1,68 +1,148 @@
 const detailedImage = document.querySelector(".detailedContainer--image");
 const detailedTitle = document.querySelector(".detailedContainer--title");
-const galleryContainer = document.querySelector(".gallery");
+const formElem = document.getElementById("query-form");
+const mainElem = document.querySelector(".main");
+const inputElements = document.querySelectorAll("#query-form [name]");
+const API_KEY = "1eb9c2c4f46b71a5b4e658c14148c7cd";
+let year;
+let page = 1;
+const LANGUAGE = "en-us";
+const image_prefix = "https://image.tmdb.org/t/p/w500";
 
-async function cats() {
-  if (!galleryContainer) {
-    console.error("Element 'gallery' not found");
-    return;
-  }
-
-  try {
-    const response = await fetch("https://api.thecatapi.com/v1/breeds");
-    if (!response.ok) throw new Error("Failed to load breed list");
-
-    const data = await response.json();
-    galleryContainer.innerHTML = getItems(data);
-
-    addImage();
-  } catch (error) {
-    console.error("Data loading error:", error);
-    galleryContainer.innerHTML =
-      "<p>Error loading data. Please try again later.</p>";
-  }
+let galleryImages;
+const galleryElem = document.getElementById("movies_gallery");
+async function drawGalleryItems() {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=${LANGUAGE}&primary_release_year=${year}&page=${page}&sort_by=popularity.desc`
+  );
+  const data = await response.json();
+  const itemsData = getItemsData(data.results);
+  const items = getItems(itemsData);
+  galleryElem.innerHTML = items;
+  galleryImages = document.querySelectorAll(".gallery--item_image");
+  addListeners();
 }
 
-function addImage() {
-  document.querySelectorAll(".gallery--item_image").forEach((image) => {
-    image.addEventListener("click", function () {
-      setDetails(image);
-    });
-  });
+function getItemsData(data) {
+  const itemsData = data.map((record) => ({
+    itemImage: getImage(record.poster_path),
+    detailedImage: getImage(record.backdrop_path),
+    title: record.title,
+    detailedTitle: record.overview,
+  }));
+  return itemsData;
 }
 
-function getItems(data) {
-  return data
-    .map((breed) => {
-      const image = breed.reference_image_id
-        ? `https://cdn2.thecatapi.com/images/${breed.reference_image_id}.jpg`
-        : "images/placeholder.jpg";
-      return `
-        <li class="gallery--item">
+function getItems(itemsData) {
+  const items = itemsData.map(getItem);
+  return items.join();
+}
+
+function getItem({ itemImage, detailedImage, title, detailedTitle }) {
+  return `<li class="gallery--item">
           <img
-            src="${image}"
-            alt="${breed.name}"
+            src="${itemImage}"
+            alt="${title + " image"}"
             class="gallery--item_image"
-            data-detailed-image="${image}"
-            data-detailed-title="${breed.description || "Description unavailable"}"
+            data-detailed-image="${detailedImage}"
+            data-detailed-title="${detailedTitle}"
           />
-          <span class="gallery--item_title">${breed.name}</span>
-        </li>
-      `;
-    })
-    .join("");
+          <span class="gallery--item_title">${title} </span>
+        </li>`;
 }
 
+function getImage(image_id) {
+  return `${image_prefix}${image_id}`;
+}
 
-function setDetails(image) {
+function addListeners() {
+  for (let i = 0; i < galleryImages.length; i++) {
+    galleryImages[i].addEventListener("click", function () {
+      setDetails(galleryImages[i]);
+    });
+  }
+}
+
+function setDetails(galleryImage) {
+  let image = galleryImage.getAttribute("data-detailed-image");
+  detailedImage.src = "";
+  detailedImage.src = image;
+  detailedTitle.innerHTML =
+    galleryImage.getAttribute("data-detailed-title") +
+    '<span class="for_ellipsis">...</span>';
+  animate();
+}
+
+function animate() {
   detailedImage.classList.remove("animation-up");
   detailedTitle.classList.remove("animation-down");
-
-  detailedImage.src = image.getAttribute("data-detailed-image");
-  detailedTitle.innerHTML = image.getAttribute("data-detailed-title");
-
-  detailedImage.classList.add("animation-up");
-  detailedTitle.classList.add("animation-down");
+  setTimeout(function () {
+    detailedImage.classList.add("animation-up");
+    detailedTitle.classList.add("animation-down");
+  }, 0);
 }
 
-cats();
+
+formElem.addEventListener("submit", async function (event) {
+  event.preventDefault();
+  const data = getFormData();
+  year = +data.year;
+  page = 1;
+  console.log(year);
+  await drawGalleryItems();
+  mainElem.classList.remove("hidden");
+  formElem.classList.add("hidden");
+});
+
+
+document
+  .querySelector(".fold-button")
+  .addEventListener("click", async function () {
+    console.log("Next button clicked!");
+
+    page++;
+
+    await drawGalleryItems();
+
+    detailedImage.src = "images/film.webp";
+    detailedTitle.innerHTML = `Page number ${page} from Movie History year ${year} <span class="for_ellipsis">.....</span>`;
+
+
+    detailedImage.classList.remove("animation-up");
+    detailedTitle.classList.remove("animation-down");
+
+    setTimeout(() => {
+      detailedImage.classList.add("animation-up");
+      detailedTitle.classList.add("animation-down");
+    }, 0);
+  });
+
+function getFormData() {
+  const inputElementsArr = Array.from(inputElements);
+  const dataObj = inputElementsArr.reduce(
+    (res, curElem) => ({ ...res, [curElem.name]: curElem.value }),
+    {}
+  );
+  return dataObj;
+}
+
+function moveToInputData() {
+  mainElem.classList.add("hidden");
+  formElem.classList.remove("hidden");
+
+  detailedImage.src = "images/film.webp";
+  detailedTitle.innerHTML =
+    "gallery of the movies from themoviedb API. You may see many movies with images and short description. Sorted by popularity in the descending order <span class='for_ellipsis'>.....</span>";
+  page = 1;
+}
+
+document.querySelector(".fold-button").addEventListener("click", async function () {
+  console.log("Next button clicked!");
+  page++;
+  await drawGalleryItems();
+
+  detailedImage.src = "./images/film.webp";
+  detailedTitle.innerHTML = `Page number ${page} from Movie History year ${year} <span class="for_ellipsis">.....</span>`;
+
+  animate();
+});

@@ -1,0 +1,75 @@
+body {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+}
+
+.main {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.logo {
+  font-size: 2.5rem;
+  margin-top: 2rem;
+}
+
+.definition-text {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  max-width: 80%;
+}
+
+.colored-letters {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  font-size: 2rem;
+  justify-content: center;
+}
+
+#letter-input,
+#word-input {
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  width: 200px;
+  margin: 0.5rem;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  margin: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #0077cc;
+  color: white;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #005fa3;
+}
+
+#play-again {
+  display: none;
+  background: linear-gradient(45deg, #ff8c00, #ff0080);
+  border-radius: 20px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  color: white;
+  border: none;
+}
+
+#play-again:hover {
+  background-color: #218838;
+}
+
+.game-status p {
+  margin: 0.3rem 0;
+  font-weight: bold;
+}

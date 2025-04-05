@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wordle HTML/CSS</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1 class="logo">HTML/CSS Wordle Game</h1>
+    </header>
+    <main class="main">
+      <section class="definition-section">
+        <p id="definition" class="definition-text"></p>
+      </section>
+
+      <section id="word-display" class="colored-letters"></section>
+
+      <section class="input-section">
+        <input
+          type="text"
+          id="letter-input"
+          maxlength="1"
+          placeholder="Enter a letter"
+        />
+        <button class="btn" onclick="handleLetterInput()">Check Letter</button>
+      </section>
+
+      <section class="input-section">
+        <input
+          type="text"
+          id="word-input"
+          placeholder="Guess the full word"
+          readonly
+        />
+        <button class="btn" id="guess-button" disabled>Guess Word</button>
+      </section>
+
+      <section class="game-status">
+        <p id="attempts"></p>
+        <p id="letter-count"></p>
+        <p id="remaining-letter-count"></p>
+        <p id="game-message" class="shake-zoom"></p>
+        <button id="play-again" onclick="startGame()">Play Again</button>
+      </section>
+    </main>
+
+    <script src="src/main.js"></script>
+  </body>
+</html>
