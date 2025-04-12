@@ -1,7 +1,6 @@
 import './style.css'
 import javascriptLogo from './javascript.svg'
 import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
 
 document.querySelector('#app').innerHTML = `
   <div>
@@ -13,12 +12,18 @@ document.querySelector('#app').innerHTML = `
     </a>
     <h1>Hello Vite!</h1>
     <div class="card">
-      <button id="counter" type="button"></button>
+      <h2>Текущее время:</h2>
+      <input id="time-field"<readonly />
     </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
   </div>
-`
+`;
 
-setupCounter(document.querySelector('#counter'))
+const time = document.getElementById("time-field");
+
+function updateTime() {
+  const now = new Date();
+  time.value = now.toLocaleTimeString();
+}
+
+updateTime();
+setInterval(updateTime, 1000); 

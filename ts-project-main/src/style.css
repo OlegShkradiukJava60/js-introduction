@@ -52,7 +52,7 @@ h1 {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
 .logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
+  filter: drop-shadow(0 0 2em #3178c6aa);
 }
 
 .card {
@@ -95,13 +95,12 @@ button:focus-visible {
   }
 }
 
-input {
-  border: none;
-  background: none;
-  font-size: 2em;
-  text-align: center;
-  width: 200px;
-  padding: 10px;
-  margin: 0 auto;
-  display: block;
+.line{ 
+  width: 100%;
+  border: 2px solid #ffffff;
+  margin: 10px 0;
+}
+
+#count-btn, #check-anagram-btn {
+  margin:10px;
 }
