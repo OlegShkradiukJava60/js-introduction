@@ -1,64 +1,34 @@
-import './style.css';
+//TODO
+//Write simple test based on console.log functionality for testing Store class methods
 
-const countBtn = document.getElementById('count-btn');
-const numberInput = document.getElementById('number-input') as HTMLInputElement;
+import Predicate from "./Predicate";
+import Store from "./Store";
 
-if (countBtn && numberInput) {
-  countBtn.addEventListener('click', () => {
-    const inputValue = numberInput.value;
-    const numberArray: number[] = inputValue
-      .split(',')
-      .map(str => parseInt(str.trim()))
-      .filter(num => !isNaN(num));
+//For example T msay be class Employee like
+class Employee {
+    constructor(public id: string, public name: string, public salary: number) {
 
-    const output = occurrences(numberArray);
-
-    const numberOutputEl = document.getElementById('number-output');
-    if (numberOutputEl) {
-      numberOutputEl.innerHTML = output.join('<br>');
     }
-  });
 }
-
-function occurrences(input: number[]): string[] {
-  const counts: { [key: number]: number } = {};
-
-  input.forEach(item => {
-    counts[item] = (counts[item] || 0) + 1;
-  });
-
-  return Object.entries(counts)
-    .sort(([aKey, aVal], [bKey, bVal]) => {
-      return bVal - aVal || Number(aKey) - Number(bKey);
-    })
-    .map(([key, count]) => `${key} => ${count}`);
-}
-
-const checkAnagramBtn = document.getElementById('check-anagram-btn');
-const wordInput = document.getElementById('word-input') as HTMLInputElement;
-const anagramInput = document.getElementById('anagram-input') as HTMLInputElement;
-
-if (checkAnagramBtn && wordInput && anagramInput) {
-  checkAnagramBtn.addEventListener('click', () => {
-    const word = wordInput.value.trim();
-    const anagram = anagramInput.value.trim();
-
-    const resultText = isAnagram(word, anagram)
-      ? `✅ "${anagram}" is an anagram of "${word}"`
-      : `❌ "${anagram}" is NOT an anagram of "${word}"`;
-
-    const anagramOutputEl = document.getElementById('anagram-output');
-    if (anagramOutputEl) {
-      anagramOutputEl.innerHTML = resultText;
+class SalaryGreaterThan implements Predicate<Employee> {
+    constructor(private minSalary: number) { }
+    test(item: Employee): boolean {
+        return item.salary > this.minSalary;
     }
-  });
 }
+const store = new Store<Employee> ();
+const emp1 = new Employee("1", "John Doe", 50000);
+const emp2 = new Employee("2", "Bob Smith", 60000);
+const emp3 = new Employee("3", "Alice Johnson", 70000);
+const emp4 = new Employee("4", "Bob Brown", 80000);
+const empleyees: Employee[] = [emp1, emp2, emp3, emp4];
+empleyees.forEach(emp => store.add(emp));
 
-function isAnagram(word1: string, word2: string): boolean {
-  const normalize = (str: string) => str.replace(/\W/g, '').toLowerCase().split('').sort().join('');
-  
-  const normalizedWord1 = normalize(word1);
-  const normalizedWord2 = normalize(word2);
-
-  return normalizedWord1 === normalizedWord2;
-}
+console.log(store.getById("1"),'Should print Employee object with id "1"'); // Should print Employee object with id "1"
+console.log(store.getById("5"),'Should print undefined'); // Should print undefined
+console.log(store.find({  test:emp => emp.salary < 60000 }),'Should print array of Employee objects with salary less than 60000'); // Should print array of Employee objects with salary less than 60000  
+console.log(store.find(new SalaryGreaterThan(50000)),'Should print array of Employee objects with salary greater than 50000'); // Should print array of Employee objects with salary greater than 50000
+console.log(store.find({test: emp => emp.name.startsWith("Bob")}),'Should print Employees with ids: "2" and "4"'); // Should print Employees with ids: "2" and "4"
+console.log(store.find(new SalaryGreaterThan(80000)),'Should print empty array'); // Should print empty array
+console.log(store.remove("1"),'should print Employee with id "1" as result of removing employee with id "1"'); // Should remove Employee object with id "1"    
+console.log(store.getById("1"),'Should print undefined after removing Employee with id "1"'); // Should print undefined

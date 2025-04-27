@@ -26,4 +26,4 @@ function updateTime() {
 }
 
 updateTime();
-setInterval(updateTime, 1000); 
+setInterval(updateTime, 1000);

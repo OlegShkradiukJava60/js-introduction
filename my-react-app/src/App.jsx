@@ -1,39 +1,45 @@
-import { useState, useEffect } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import { useEffect, useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
 function App() {
-  const [time, setTime] = useState(new Date().toLocaleTimeString());
-
+  const [time, setTime] = useState(new Date().toLocaleTimeString())
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTime(new Date().toLocaleTimeString());
-    }, 1000);
+    console.log("use efecte called")
+    function tic () {
+    setTime(new Date().toLocaleTimeString());
+    console.log("tic function");
+  }
+  setInterval(tic, 1000);
 
-    return () => clearInterval(intervalId); // очистка при размонтировании
-  }, []);
-
+  },[])
+  
+ 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
+        <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
+        <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <div className="current-time">
-          <h2>Текущее время:</h2>
-          <div className="time-display">{(time)}</div>
-        </div>
+        <label >
+         current time is {time}
+        </label>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
       </div>
-
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
