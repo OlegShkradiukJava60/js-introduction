@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/OlegShkradiukJava60/js-introduction/issues"
   },
-  "homepage": "https://github.com/OlegShkradiukJava60/js-introduction#readme"
+  "homepage": "https://github.com/OlegShkradiukJava60/js-introduction#readme",
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
+    "json-server": "^1.0.0-beta.3",
+    "lodash": "^4.17.21",
+    "react-redux": "^9.2.0"
+  }
 }
